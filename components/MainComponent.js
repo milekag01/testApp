@@ -1,29 +1,29 @@
 import React from 'react';
-import {View} from 'react-native';
+import {View, Platform} from 'react-native';
 import {DISHES} from '../shared/dishes';
 import Menu from './MenuComponent';
 import DishDetail from './DishDetailComponent';
+import {createStackNavigator, createAppContainer} from 'react-navigation';
+
+
+
+//styles should be given individually to every screen of stack
+const MenuNavigator = createStackNavigator({
+    Menu: {screen: Menu},
+    DishDetail: {screen: DishDetail}
+}, {
+    initialRouteName: 'Menu',
+});
+
+//react navigation v3
+const Container = createAppContainer(MenuNavigator);
 
 class Main extends React.Component {
     
-    state = {
-        dishes: DISHES,
-        selectedDish: null
-    }
-
-    onDishSelect = (dishId) => {
-        this.setState({
-            selectedDish: dishId
-        });
-    }
-
     render() {
         return (
-            <View>
-                <Menu dishes={this.state.dishes} 
-                    onPress = {this.onDishSelect}
-                />
-                <DishDetail dish={this.state.dishes.filter((dish) => dish.id === this.state.selectedDish)[0]} />
+            <View style={{flex: 1}}>
+               <Container />
             </View>
             
         );
