@@ -1,11 +1,11 @@
 import React from 'react';
-import {View, Platform} from 'react-native';
+import {View, Platform, Image, StyleSheet, Text, ScrollView} from 'react-native';
 import Home from './HomeComponent';
 import Menu from './MenuComponent';
 import Contact from './ContactComponent';
 import About from './AboutComponent';
 import DishDetail from './DishDetailComponent';
-import {createStackNavigator, createAppContainer, createDrawerNavigator} from 'react-navigation';
+import {createStackNavigator, createAppContainer, createDrawerNavigator, DrawerItems, SafeAreaView} from 'react-navigation';
 import {Icon} from 'react-native-elements';
 
 
@@ -54,6 +54,30 @@ const AboutNavigator = createStackNavigator({
         })
     }
 });
+
+// custom drawer content showing branding
+//safeAreaView is specifically for iphone X
+const CustonDrawerContentComponent = (props) => (
+    <ScrollView>
+        <SafeAreaView style={styles.container}
+            forceInset={{top:'always', horizontal: 'never'}}>
+
+            <View style={styles.drawerHeader}>
+                <View style={{flex: 1}}>
+                    <Image source={require('./images/logo.png')}
+                        style={styles.drawerImage}/>
+
+                </View>
+                <View style={{flex:2}}>
+                    <Text style={styles.drawerHeaderText}>Ristorante Lapinos</Text>
+                </View>
+            </View>
+
+           <DrawerItems {...props} />
+        
+        </SafeAreaView>
+    </ScrollView>
+);
 
 //creating a drawer navigator
 const MainNavigator = createDrawerNavigator({
@@ -115,7 +139,8 @@ const MainNavigator = createDrawerNavigator({
     }
 
 },{
-    drawerBackgroundColor: '#f7f7f7'
+    drawerBackgroundColor: '#f7f7f7',
+    contentComponent: CustonDrawerContentComponent
 });
 
 //react navigation v3
@@ -132,5 +157,29 @@ class Main extends React.Component {
         );
     }
 }
+
+const styles = StyleSheet.create({
+    container: {
+        flex: 1
+    },
+    drawerHeader: {
+        backgroundColor: '#ea1744',
+        height: 140,
+        alignItems: 'center',
+        justifyContent: 'center',
+        flex: 1,
+        flexDirection: 'row'
+    },
+    drawerHeaderText: {
+        color: '#fff',
+        fontSize: 24,
+        fontWeight: 'bold',
+    },
+    drawerImage: {
+        margin: 10,
+        width: 80,
+        height: 60
+    }
+});
 
 export default Main;
