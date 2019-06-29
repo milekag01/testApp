@@ -7,6 +7,8 @@ import {comments} from './comments';
 import {promotions} from './promotions';
 import {leaders} from './leaders';
 
+import { composeWithDevTools } from 'redux-devtools-extension';    //for redux devtool
+
 export const ConfigureStore = () => {
     const store = createStore(
         combineReducers({
@@ -14,7 +16,7 @@ export const ConfigureStore = () => {
             comments: comments,
             leaders: leaders,
             promotions: promotions
-        }), applyMiddleware(thunk,logger)
+        }), composeWithDevTools(applyMiddleware(thunk,logger))
     );
 
     return store;

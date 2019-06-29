@@ -83,7 +83,7 @@ export const fetchPromos = () => (dispatch) => {
 
     dispatch(promosLoading());
 
-    return fetch(baseUrl + 'promos')
+    return fetch(baseUrl + 'promotions')
             .then(response => {
                 if(response.ok) {
                     return response;

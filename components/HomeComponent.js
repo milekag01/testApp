@@ -1,9 +1,9 @@
 import React from 'react';
 import {View, Text, ScrollView} from 'react-native';
 import {Card} from 'react-native-elements';
-import {DISHES} from '../shared/dishes';
-import {PROMOTIONS} from '../shared/promotions';
-import {LEADERS} from '../shared/leaders';
+
+import {connect} from 'react-redux';
+import {baseUrl} from '../shared/baseUrl';
 
 
 //RenderItem functional component
@@ -15,7 +15,7 @@ const RenderItem = (props) => {
             <Card
             featuredTitle={item.name}
             featuredSubtitle={item.designation}
-            image={require('./images/elaicheesecake.png')}
+            image={{uri: baseUrl + item.image}}
             >
                 <Text style={{margin: 10}}> 
                     {item.description} 
@@ -30,11 +30,6 @@ const RenderItem = (props) => {
 
 class Home extends React.Component {
 
-    state = {
-        dishes: DISHES,
-        promotions: PROMOTIONS,
-        leaders: LEADERS
-    }
     static navigationOptions = {
         title: 'Home',
         headerStyle: {
@@ -49,12 +44,20 @@ class Home extends React.Component {
     render() {
         return (
             <ScrollView>
-                <RenderItem item={this.state.dishes.filter((dish) => dish.featured)[0]} />
-                <RenderItem item={this.state.promotions.filter((promo) => promo.featured)[0]} />
-                <RenderItem item={this.state.leaders.filter((leader) => leader.featured)[0]} />
+                <RenderItem item={this.props.dishes.dishes.filter((dish) => dish.featured)[0]} />
+                <RenderItem item={this.props.promotions.promotions.filter((promo) => promo.featured)[0]} />
+                <RenderItem item={this.props.leaders.leaders.filter((leader) => leader.featured)[0]} />
             </ScrollView>
         )
     }
 }
 
-export default Home;
+const mapStateToProps = (state) => {
+    return {
+        dishes: state.dishes,
+        leaders: state.leaders,
+        promotions: state.promotions
+    }
+}
+
+export default connect(mapStateToProps)(Home);
